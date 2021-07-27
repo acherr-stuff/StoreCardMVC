@@ -97,21 +97,22 @@ export class catalogListView {
     }
   }
 
-//   addToBasket = function (item) {
-//   basket.addToBasket(item);
-// };
+  //   addToBasket = function (item) {
+  //   basket.addToBasket(item);
+  // };
 
   bindAddToBusket(handler) {
     this.catalog.addEventListener("click", (event) => {
       if (event.target.className === "add_button") {
         const id = event.target.dataset.id;
-        
+
         handler(id);
 
         console.log("товар добавлен в корзину!");
       }
     });
   }
+
 }
 
 export class catalogListController {
@@ -120,15 +121,13 @@ export class catalogListController {
     this.view = view;
     this.onCatalogListChanged(this.model.catalogProducts);
   }
+
   onCatalogListChanged(items) {
     this.view.displayItems(items);
     this.view.bindAddToBusket(this.handleAddToBusket.bind(this));
     // this.view.bindAddToBusket(function (id) {
     // this.handleAddToBusket(id);});
-
   }
-
-
 
   handleAddToBusket(id) {
     let itemIndex = this.model.catalogProducts.findIndex((x) => x.id == id);
@@ -137,6 +136,9 @@ export class catalogListController {
       this.addToBusket(item);
     }
   }
+  // handleDeleteTodo (id) {
+  //   this.model.deleteTodo(id);
+  // };
 }
 
 
