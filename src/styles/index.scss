@@ -1,0 +1,129 @@
+@import "mixins";
+@import "layout";
+@import "news";
+@import "animation";
+// @import "basket";
+
+body {
+  display: flex;
+}
+
+#catalog {
+    width: 49%;
+    border-right: 3px solid #924;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+#busket {
+    width: 49%;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+.product {
+
+  margin: 20px auto;
+  width: 25%;
+  border: 2px solid green;
+  border-radius: 10px; 
+  
+
+  .product__definition {
+    // width: 100%;
+    margin: 20px;
+
+    .product__definition__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+    font-size: 19px;
+    font-weight: 600;
+    }
+
+
+    img {
+      // max-width: 200px;
+      width: 100%;
+    }
+
+    .product__definition__price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    }
+
+  }
+
+  .product__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 20px;
+
+    .add_button {
+
+      background-color: green;
+      color: honeydew;
+      border: none; 
+      outline: none;
+      border-radius: 5px; 
+      padding: 5px 20px;
+
+    }
+  }
+
+  
+}
+
+#busket_table {
+    width: 100%;
+    border: 2px solid green;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 60px;
+
+}
+.busket__item {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    .busket__item__count {
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+        .busket__item__count__number {
+          margin: 0 10px;
+        }
+
+        .busket__item__count__down, .busket__item__count__up {
+          border: none;
+          outline: none;
+          width: 25px;
+          height: 25px;
+          background-color: white;
+          color: green;
+          font-size: 25px;
+          font-weight: 1000;
+          vertical-align: middle;
+        }
+
+    }
+}
+ 
+ 
