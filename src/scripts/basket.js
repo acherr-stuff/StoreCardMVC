@@ -20,7 +20,6 @@ export class busketListView {
     return element;
   }
 
-
   displayNewItem(item) {
     let busketItem = this.createElement("div", "busket__item");
     busketItem.setAttribute("data-id", item.id);
@@ -56,7 +55,7 @@ export class busketListView {
       "busket__item__count__up"
     );
     busketItemCountUp.textContent = "+";
-    busketItemCountNumber.setAttribute("data-id", item.id);
+    busketItemCountUp.setAttribute("data-id", item.id);
     busketItemCount.appendChild(busketItemCountUp);
 
     let busketItemCost = this.createElement("div", "busket__item__cost");
@@ -72,7 +71,6 @@ export class busketListView {
 
   // updateItem(item) {
 
-
   // }
 
   bindRemoveFromBusket(handler) {
@@ -81,6 +79,24 @@ export class busketListView {
         const id = event.target.dataset.id;
         handler(id);
         console.log("товар удален!");
+      }
+    });
+  }
+  bindIncreaseCount(handler) {
+    this.busket.addEventListener("click", (event) => {
+      if (event.target.className === "busket__item__count__up") {
+        const id = event.target.dataset.id;
+        handler(id);
+        // console.log("счетчик увеличен!");
+      }
+    });
+  }
+  bindDecreaseCount(handler) {
+    this.busket.addEventListener("click", (event) => {
+      if (event.target.className === "busket__item__count__down") {
+        const id = event.target.dataset.id;
+        handler(id);
+        // console.log("счетчик увеличен!");
       }
     });
   }
@@ -95,30 +111,92 @@ export  class busketListController {
 
   onBusketListChanged(items) {
     this.view.bindRemoveFromBusket(this.handleRemoveFromBusket.bind(this));
+    this.view.bindIncreaseCount(this.handleIncreaseCount.bind(this));
+    this.view.bindDecreaseCount(this.handleDecreaseCount.bind(this));
+
   }
 
-  
   deleteFromBusket(id) {
     let tL = document.querySelectorAll(".busket__item");
 
-    for (let i=0; i<this.model.busketProducts.length; i++) {
-      
-            if (tL[i].dataset.id == id) {
+    for (let i = 0; i < this.model.busketProducts.length; i++) {
+      if (tL[i].dataset.id == id) {
+        //удаление товара из массива элементов корзины
+        this.model.busketProducts.splice(id, 1);
 
-          //удаление товара из массива элементов корзины
-          this.model.busketProducts.splice(id, 1 );
-            
-            //удалить div товара из корзины
-            removeRow(tL[i]);
+        //удалить div товара из корзины
+        removeRow(tL[i]);
       }
     }
-  }
+  }     
+  
 
   handleRemoveFromBusket(id) {
-    this.deleteFromBusket(id)
+    this.deleteFromBusket(id);
   }
 
-  addToBusket(item) {
+
+
+  handleDecreaseCount(id) { 
+
+    if (i>0) {
+    let tCount = document.querySelectorAll(".busket__item__count__number");
+
+    for (let i = 0; i < this.model.busketProducts.length; i++) {
+      if (tCount[i].dataset.id == id) {
+        this.model.busketProducts[i].count--;
+        this.model.busketProducts[i].cost -= this.model.busketProducts[i].price;
+
+        // console.log(this.model.busketProducts[i].cost);
+
+        document
+          .getElementById("busket_table")
+          .querySelector('[data-id="' + id + '"]')
+          .querySelector(".busket__item__count__number").innerText =
+          this.model.busketProducts[i].count;
+
+        document
+          .getElementById("busket_table")
+          .querySelector('[data-id="' + id + '"]')
+          .querySelector(".busket__item__cost").innerText =
+          this.model.busketProducts[i].cost;
+      }
+    }
+    }
+  }
+  
+  
+  handleIncreaseCount(id) {
+  let tCount = document.querySelectorAll(".busket__item__count__number");
+
+  // //   //изменяем значение в модели
+  // let productInBusket = this.model.busketProducts.findIndex((x) => x.id == item.id);
+
+   for (let i = 0; i < this.model.busketProducts.length; i++) {
+     if (tCount[i].dataset.id == id) {
+       this.model.busketProducts[i].count++;
+        this.model.busketProducts[i].cost +=this.model.busketProducts[i].price;
+
+       console.log(this.model.busketProducts[i].cost);
+
+       document
+         .getElementById("busket_table")
+         .querySelector('[data-id="' + id + '"]')
+         .querySelector(".busket__item__count__number").innerText =
+         this.model.busketProducts[i].count;
+
+         
+       document
+         .getElementById("busket_table")
+         .querySelector('[data-id="' + id + '"]')
+         .querySelector(".busket__item__cost").innerText =
+         this.model.busketProducts[i].cost;
+     }
+
+  }
+}
+
+ addToBusket(item) {
     //ищем есть ли в корзине товар с таким id
     let productInBusket = this.model.busketProducts.findIndex(
       (x) => x.id == item.id
@@ -134,35 +212,28 @@ export  class busketListController {
       console.log("число позиций в корзине" + this.model.busketProducts.length);
 
       item.count = 1;
-      item.cost = item.price*item.count;
+      item.cost = item.price * item.count;
       console.log("число " + item.count + "стоим" + item.cost);
       //отрисовываем новый элемент в корзин
       this.view.displayNewItem(item);
       // this.view.displayNewItem(this.model.busketProducts[productInBusket]);
     } else {
-
       console.log("ветка 2");
-      
+
       item.count++;
-      item.cost = item.price*item.count;
+      item.cost = item.price * item.count;
 
       document
-            .getElementById("busket_table")
-            .querySelector('[data-id="' + item.id + '"]')
-            .querySelector(".busket__item__count__number").innerText = item.count ;
+        .getElementById("busket_table")
+        .querySelector('[data-id="' + item.id + '"]')
+        .querySelector(".busket__item__count__number").innerText = item.count;
 
-            
       document
-            .getElementById("busket_table")
-            .querySelector('[data-id="' + item.id + '"]')
-            .querySelector(".busket__item__cost").innerText =  item.cost + " ₽";
-    
-      
-      }
-    
-     
+        .getElementById("busket_table")
+        .querySelector('[data-id="' + item.id + '"]')
+        .querySelector(".busket__item__cost").innerText = item.cost + " ₽";
+    }
   }
-
 }
 
 

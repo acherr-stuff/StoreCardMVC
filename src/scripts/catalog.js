@@ -5,21 +5,21 @@ export class catalogListModel {
       {
         id: "1",
         name: "Смартфон DEXP A250",
-        image: "./assets/images/pic1.jpg",
+        image: "./assets/images/pic4.jpg",
         price: 3000,
         definition: "",
       },
       {
         id: "2",
         name: "Планшет DEXP A250",
-        image: "./assets/images/pic2.jpg",
+        image: "./assets/images/pic4.jpg",
         price: 3000,
         definition: "",
       },
       {
         id: "3",
         name: "Ноутбук DEXP A250",
-        image: "./assets/images/pic1.jpg",
+        image: "./assets/images/pic4.jpg",
         price: 3000,
         definition: "",
       },
@@ -113,6 +113,7 @@ export class catalogListView {
     });
   }
 
+ 
 }
 
 export class catalogListController {
