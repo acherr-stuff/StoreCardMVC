@@ -125,8 +125,6 @@ export class catalogListController {
   onCatalogListChanged(items) {
     this.view.displayItems(items);
     this.view.bindAddToBusket(this.handleAddToBusket.bind(this));
-    // this.view.bindAddToBusket(function (id) {
-    // this.handleAddToBusket(id);});
   }
 
   handleAddToBusket(id) {
@@ -136,16 +134,5 @@ export class catalogListController {
       this.addToBusket(item);
     }
   }
-  // handleDeleteTodo (id) {
-  //   this.model.deleteTodo(id);
-  // };
+  
 }
-
-
-
-// const catalog = new catalogListController(new catalogListModel, new catalogListView);
-
-
-// catalog.addToBusket = function (item) {
-//     busket.addToBusket(item);
-//   };

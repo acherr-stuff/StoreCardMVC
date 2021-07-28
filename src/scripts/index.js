@@ -7,15 +7,17 @@ import '../styles/index.scss';
 import { busketListView, busketListModel, busketListController } from './basket';
 import { catalogListView, catalogListModel, catalogListController } from "./catalog";
 
+const catalog = new catalogListController(
+  new catalogListModel(),
+  new catalogListView()
+);
+
 const busket = new busketListController(
   new busketListModel(),
   new busketListView()
 );
 
-const catalog = new catalogListController(
-  new catalogListModel(),
-  new catalogListView()
-);
+
 
 catalog.addToBusket = function (item) {
   busket.addToBusket(item);

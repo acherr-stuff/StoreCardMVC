@@ -20,22 +20,6 @@ export class busketListView {
     return element;
   }
 
-  // deleteElement(item) {
-  //     const deletedElement = this.busketProsucts[
-  //         this.busketProsucts.findIndex((x) => x.id == item.id)
-  //       ];
-
-  //       if (deletedElement > -1) {
-
-  //          this.busketProsucts.splice(deletedElement,1)
-  //       }
-  //     console.log("массив после удаление" + this.busketProsucts.length);
-
-  // }
-
-  // updateElementData(item) {
-
-  // }
 
   displayNewItem(item) {
     let busketItem = this.createElement("div", "busket__item");
@@ -46,7 +30,7 @@ export class busketListView {
     busketItem.appendChild(busketItemTitle);
 
     let busketItemPrice = this.createElement("div", "busket__item__price");
-    busketItemPrice.textContent = item.price;
+    busketItemPrice.textContent = item.price + " ₽";
     busketItem.appendChild(busketItemPrice);
     let busketItemCount = this.createElement("div", "busket__item__count");
     busketItem.appendChild(busketItemCount);
@@ -86,6 +70,11 @@ export class busketListView {
     busketItem.appendChild(busketItemDelete);
   }
 
+  // updateItem(item) {
+
+
+  // }
+
   bindRemoveFromBusket(handler) {
     this.busket.addEventListener("click", (event) => {
       if (event.target.className === "busket__item__delete") {
@@ -117,7 +106,6 @@ export  class busketListController {
             if (tL[i].dataset.id == id) {
 
           //удаление товара из массива элементов корзины
-          // let delitingID = this.model.busketProducts.findIndex((x) => x.id == id );
           this.model.busketProducts.splice(id, 1 );
             
             //удалить div товара из корзины
@@ -146,21 +134,38 @@ export  class busketListController {
       console.log("число позиций в корзине" + this.model.busketProducts.length);
 
       item.count = 1;
-      item.cost = item.price + " ₽";
+      item.cost = item.price*item.count;
       console.log("число " + item.count + "стоим" + item.cost);
       //отрисовываем новый элемент в корзин
       this.view.displayNewItem(item);
       // this.view.displayNewItem(this.model.busketProducts[productInBusket]);
     } else {
-      console.log("ветка2");
-      item.count++;
-      item.cost += item.price + " ₽";
 
-      console.log(item.count + item.cost);
-    }
+      console.log("ветка 2");
+      
+      item.count++;
+      item.cost = item.price*item.count;
+
+      document
+            .getElementById("busket_table")
+            .querySelector('[data-id="' + item.id + '"]')
+            .querySelector(".busket__item__count__number").innerText = item.count ;
+
+            
+      document
+            .getElementById("busket_table")
+            .querySelector('[data-id="' + item.id + '"]')
+            .querySelector(".busket__item__cost").innerText =  item.cost + " ₽";
+    
+      
+      }
+    
+     
   }
 
 }
+
+
 
 
 function removeRow(input) {
