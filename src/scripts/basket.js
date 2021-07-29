@@ -2,12 +2,14 @@
 export class busketListModel {
   constructor() {
     this.busketProducts = [];
+    this.sumOfTheProducts = 0;
   }
 }
-
+ 
 export class busketListView {
   constructor() {
     this.busket = this.getElement("#busket_table");
+    this.busketBottom = this.getElement("#busket_bottom");
   }
 
   createElement(tag, className) {
@@ -20,7 +22,22 @@ export class busketListView {
     return element;
   }
 
+
+ drawFooter() {
+   let busketDesc = createElement("div", "busket__description");
+    this.busketBottom.appendChild(busketDesc);
+    let busketOrderPrice = createElement("div", "busket__sum");
+    this.busketOrderPrice.innerText = "ТОВАРОВ В КОРЗИНЕ НА СУММУ: "
+    this.busketBottom.appendChild(busketOrderPrice);
+ }
+
+
   displayNewItem(item) {
+
+  
+
+
+
     let busketItem = this.createElement("div", "busket__item");
     busketItem.setAttribute("data-id", item.id);
     this.busket.appendChild(busketItem);
@@ -69,9 +86,7 @@ export class busketListView {
     busketItem.appendChild(busketItemDelete);
   }
 
-  // updateItem(item) {
 
-  // }
 
   bindRemoveFromBusket(handler) {
     this.busket.addEventListener("click", (event) => {
@@ -102,7 +117,7 @@ export class busketListView {
   }
 }
 
-export  class busketListController {
+export class busketListController {
   constructor(model, view) {
     this.model = model;
     this.view = view;
@@ -139,11 +154,14 @@ export  class busketListController {
 
   handleDecreaseCount(id) { 
 
-    if (i>0) {
+    
     let tCount = document.querySelectorAll(".busket__item__count__number");
 
     for (let i = 0; i < this.model.busketProducts.length; i++) {
-      if (tCount[i].dataset.id == id) {
+      if (
+        tCount[i].dataset.id == id &&
+        this.model.busketProducts[i].count > 1
+      ) {
         this.model.busketProducts[i].count--;
         this.model.busketProducts[i].cost -= this.model.busketProducts[i].price;
 
@@ -162,16 +180,13 @@ export  class busketListController {
           this.model.busketProducts[i].cost;
       }
     }
-    }
+    
   }
   
   
   handleIncreaseCount(id) {
   let tCount = document.querySelectorAll(".busket__item__count__number");
-
-  // //   //изменяем значение в модели
-  // let productInBusket = this.model.busketProducts.findIndex((x) => x.id == item.id);
-
+    //увеличим значение счетчика
    for (let i = 0; i < this.model.busketProducts.length; i++) {
      if (tCount[i].dataset.id == id) {
        this.model.busketProducts[i].count++;
@@ -191,12 +206,21 @@ export  class busketListController {
          .querySelector('[data-id="' + id + '"]')
          .querySelector(".busket__item__cost").innerText =
          this.model.busketProducts[i].cost;
+
+         this.model.sumOfTheProducts =
+           this.model.sumOfTheProducts + this.model.busketProducts[i].price;
+         this.view.busketBottom.innerText =
+           "ИТОГО: " + this.model.sumOfTheProducts + " Р";
      }
 
   }
 }
 
  addToBusket(item) {
+
+  // if (this.model.busketProducts.length == 0) {
+  //    drawFooter();
+  // }
     //ищем есть ли в корзине товар с таким id
     let productInBusket = this.model.busketProducts.findIndex(
       (x) => x.id == item.id
@@ -209,13 +233,21 @@ export  class busketListController {
 
       this.model.busketProducts.push(item);
 
+
       console.log("число позиций в корзине" + this.model.busketProducts.length);
+      console.log("стоимость заказа" + this.model.sumOfTheProducts);
+
 
       item.count = 1;
       item.cost = item.price * item.count;
       console.log("число " + item.count + "стоим" + item.cost);
       //отрисовываем новый элемент в корзин
       this.view.displayNewItem(item);
+
+
+      this.model.sumOfTheProducts = this.model.sumOfTheProducts + item.price;
+      this.view.busketBottom.innerText = "ИТОГО: " + this.model.sumOfTheProducts + " Р";
+
       // this.view.displayNewItem(this.model.busketProducts[productInBusket]);
     } else {
       console.log("ветка 2");
@@ -232,6 +264,10 @@ export  class busketListController {
         .getElementById("busket_table")
         .querySelector('[data-id="' + item.id + '"]')
         .querySelector(".busket__item__cost").innerText = item.cost + " ₽";
+
+        this.model.sumOfTheProducts = this.model.sumOfTheProducts + item.price;
+        this.view.busketBottom.innerText =
+          "ИТОГО: " + this.model.sumOfTheProducts + " Р";
     }
   }
 }

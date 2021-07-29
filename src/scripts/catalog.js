@@ -1,3 +1,4 @@
+import pic1 from "../assets/images/pic1.png";
 
 export class catalogListModel {
   constructor() {
@@ -20,13 +21,12 @@ export class catalogListModel {
         id: "3",
         name: "Ноутбук DEXP A250",
         image: "./assets/images/pic4.jpg",
+        // image: "<%=require('../assets/images/pic4.jpg')%>",
         price: 3000,
         definition: "",
       },
     ];
   }
-
-
 }
 
 export class catalogListView {
@@ -112,8 +112,6 @@ export class catalogListView {
       }
     });
   }
-
- 
 }
 
 export class catalogListController {
@@ -135,5 +133,4 @@ export class catalogListController {
       this.addToBusket(item);
     }
   }
-  
 }

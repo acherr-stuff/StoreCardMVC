@@ -3,6 +3,7 @@
 import 'normalize.css';
 import '../styles/index.scss';
 
+
 // Подключаем скрипты
 import { busketListView, busketListModel, busketListController } from './basket';
 import { catalogListView, catalogListModel, catalogListController } from "./catalog";
