@@ -1,4 +1,8 @@
-import pic1 from "../assets/images/pic1.png";
+
+import pic1 from "../assets/images/pic1.jpg";
+import pic2 from "../assets/images/pic2.jpg";
+import pic3 from "../assets/images/pic3.jpg";
+
 
 export class catalogListModel {
   constructor() {
@@ -6,22 +10,21 @@ export class catalogListModel {
       {
         id: "1",
         name: "Смартфон DEXP A250",
-        image: "./assets/images/pic4.jpg",
+        image: pic1,
         price: 3000,
         definition: "",
       },
       {
         id: "2",
         name: "Планшет DEXP A250",
-        image: "./assets/images/pic4.jpg",
+        image: pic2,
         price: 3000,
         definition: "",
       },
       {
         id: "3",
         name: "Ноутбук DEXP A250",
-        image: "./assets/images/pic4.jpg",
-        // image: "<%=require('../assets/images/pic4.jpg')%>",
+        image: pic3,
         price: 3000,
         definition: "",
       },
@@ -97,9 +100,6 @@ export class catalogListView {
     }
   }
 
-  //   addToBasket = function (item) {
-  //   basket.addToBasket(item);
-  // };
 
   bindAddToBusket(handler) {
     this.catalog.addEventListener("click", (event) => {

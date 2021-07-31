@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin"); //записываем
 
 module.exports = {
   //исходные файлыы
+  
   entry: {
     index: "./src/scripts/index.js",
   },
