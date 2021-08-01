@@ -129,37 +129,33 @@ export class busketListController {
     this.view.bindDecreaseCount(this.handleDecreaseCount.bind(this));
 
     if (this.model.busketProducts.length == 0) {
-
       this.view.busket.classList.add("unactive");
-
     }
-  
   }
-
 
   deleteFromBusket(id) {
     let tL = document.querySelectorAll(".busket__item");
-              console.log("меняются вьюхи" + tL.length);
 
-              if (tL.length == 1) {
-                this.view.busket.classList.add("unactive");
-                this.view.emptyBusket.classList.remove("unactive");
-              }
+    if (tL.length == 1) {
+      this.view.busket.classList.add("unactive");
+      this.view.emptyBusket.classList.remove("unactive");
+    }
 
+    for (let i = 0; i < this.model.busketProducts.length; i++) {
+      if (tL[i].dataset.id == id) {
+        this.model.sumOfTheProducts =
+          this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
+        this.view.busketBottom.innerText =
+          "ИТОГО: " + this.model.sumOfTheProducts + " Р";
+        //удаление товара из массива элементов корзины
+        this.model.busketProducts.splice(id -1, 1);
           
-          for (let i = 0; i < this.model.busketProducts.length; i++) {
-            if (tL[i].dataset.id == id) {
-              this.model.sumOfTheProducts =
-                this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
-              this.view.busketBottom.innerText =
-                "ИТОГО: " + this.model.sumOfTheProducts + " Р";
-              //удаление товара из массива элементов корзины
-              this.model.busketProducts.splice(id, 1);
+        //удалить div товара из корзины
+        removeRow(tL[i]);
+      }
+    }
 
-              //удалить div товара из корзины
-              removeRow(tL[i]);
-            }
-          }
+    console.log(this.model.busketProducts.length);
   }
 
   handleRemoveFromBusket(id) {
@@ -229,36 +225,30 @@ export class busketListController {
     }
   }
 
-
   addToBusket(item) {
     //ищем есть ли в корзине товар с таким id
     let productInBusket = this.model.busketProducts.findIndex(
       (x) => x.id == item.id
     );
 
-    if (this.model.busketProducts.length != 0) {
-      
+    if (this.model.busketProducts.length == 0) {
       this.view.busket.classList.remove("unactive");
       this.view.emptyBusket.classList.add("unactive");
+    }
 
-    } 
-    // else {
-    //   this.view.busket.classList.remove("unactive");
-    //   this.view.emptyBusket.classList.add("unactive");
-    // }
+    if (this.model.busketProducts.length == 0) {
+
+      console.log("productInBusket", productInBusket);
+    }
 
     if (productInBusket == -1) {
       //идем в эту ветку, если продукта с даннным id еще нет в корзине
 
       this.model.busketProducts.push(item);
 
-      if (this.model.busketProducts.length != 0) {
-        this.view.busket.classList.remove("unactive");
-        this.view.emptyBusket.classList.add("unactive");
-      }  
-        // else {
-      //   this.view.busket.classList.add("unactive");
-      //   this.view.emptyBusket.classList.remove("unactive");
+      // if (this.model.busketProducts.length != 0) {
+      //   this.view.busket.classList.remove("unactive");
+      //   this.view.emptyBusket.classList.add("unactive");
       // }
 
       item.count = 1;
@@ -292,6 +282,11 @@ export class busketListController {
     }
   }
 
+  handleAddToBusket(id) {
+
+    this.addToBusket(id);
+    
+  }
 }
 
 
