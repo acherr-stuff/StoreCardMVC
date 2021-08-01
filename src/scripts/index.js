@@ -19,6 +19,7 @@ const busket = new busketListController(
 );
 
 
+//добавление в контролер каталога метода "addtoBusket"
 
 catalog.addToBusket = function (item) {
   busket.addToBusket(item);

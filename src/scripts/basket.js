@@ -4,6 +4,14 @@ export class busketListModel {
     this.busketProducts = [];
     this.sumOfTheProducts = 0;
   }
+
+  // deleteFromBusket(id) {
+    
+  //   this.busketProducts.splice(id - 1, 1);
+  //   this.model.sumOfTheProducts =this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
+
+  //   console.log(this.model.busketProducts.length);
+  // }
 }
  
 export class busketListView {
@@ -11,6 +19,7 @@ export class busketListView {
     this.busket = this.getElement("#busket_table");
     this.busketBottom = this.getElement("#busket_bottom");
     this.emptyBusket = this.getElement("#empty_busket");
+    
     // this.busket.className = "unactive";
     
   }
@@ -24,15 +33,6 @@ export class busketListView {
     const element = document.querySelector(selector);
     return element;
   }
-
-
-//  drawFooter() {
-//    let busketDesc = createElement("div", "busket__description");
-//     this.busketBottom.appendChild(busketDesc);
-//     let busketOrderPrice = createElement("div", "busket__sum");
-//     this.busketOrderPrice.innerText = "ТОВАРОВ В КОРЗИНЕ НА СУММУ: "
-//     this.busketBottom.appendChild(busketOrderPrice);
-//  }
 
 
   displayNewItem(item) {
@@ -133,6 +133,10 @@ export class busketListController {
     }
   }
 
+  // bindBusketListChanged(callback) {
+  //   this.onBusketListChanged = callback;
+  // }
+
   deleteFromBusket(id) {
     let tL = document.querySelectorAll(".busket__item");
 
@@ -148,8 +152,8 @@ export class busketListController {
         this.view.busketBottom.innerText =
           "ИТОГО: " + this.model.sumOfTheProducts + " Р";
         //удаление товара из массива элементов корзины
-        this.model.busketProducts.splice(id -1, 1);
-          
+        this.model.busketProducts.splice(id - 1, 1);
+
         //удалить div товара из корзины
         removeRow(tL[i]);
       }
@@ -236,20 +240,10 @@ export class busketListController {
       this.view.emptyBusket.classList.add("unactive");
     }
 
-    if (this.model.busketProducts.length == 0) {
-
-      console.log("productInBusket", productInBusket);
-    }
-
     if (productInBusket == -1) {
       //идем в эту ветку, если продукта с даннным id еще нет в корзине
 
       this.model.busketProducts.push(item);
-
-      // if (this.model.busketProducts.length != 0) {
-      //   this.view.busket.classList.remove("unactive");
-      //   this.view.emptyBusket.classList.add("unactive");
-      // }
 
       item.count = 1;
       item.cost = item.price * item.count;
@@ -282,11 +276,16 @@ export class busketListController {
     }
   }
 
-  handleAddToBusket(id) {
+  // handleAddToBusket(id) {
 
-    this.addToBusket(id);
-    
-  }
+  //   if (this.model.busketProducts.length != 0) {
+  //     this.view.busket.classList.remove("unactive");
+  //     this.view.emptyBusket.classList.add("unactive");
+  //   }
+
+  //   this.addToBusket(id);
+
+  // }
 }
 
 
