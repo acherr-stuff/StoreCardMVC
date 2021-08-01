@@ -17,15 +17,43 @@ body {
 
 }
 
+#busket_header {
+  width: 100%;
+  text-align: center;
+}
+
+.unactive {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
 #busket {
     width: 49%;
     float: left;
-    display: flex;
+    // display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
 
 }
+
+#empty_busket {
+
+  width: 60%;
+  margin: 20px auto;
+  border: 2px solid green;
+  border-radius: 10px; 
+  padding: 20px;
+
+    img {
+      width: 120px;
+      height: 120px;
+    }
+}
+
 
 .product {
 
@@ -33,13 +61,13 @@ body {
   width: 25%;
   border: 2px solid green;
   border-radius: 10px; 
-  
+  max-height: 320px;
 
-  .product__definition {
+  &__definition {
     // width: 100%;
     margin: 20px;
 
-    .product__definition__title {
+    &__title {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -54,7 +82,7 @@ body {
       width: 100%;
     }
 
-    .product__definition__price {
+    &__price {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -65,7 +93,7 @@ body {
 
   }
 
-  .product__button {
+  &__button {
     width: 100%;
     display: flex;
     align-items: center;
@@ -88,12 +116,16 @@ body {
 }
 
 #busket_table {
-    width: 100%;
     border: 2px solid green;
     border-radius: 10px;
     padding: 20px;
     margin: 0 60px;
 
+}
+
+#busket_bottom {
+    margin: 0 60px;
+    text-align: right;
 }
 .busket__item {
     width: 100%;
@@ -124,6 +156,21 @@ body {
         }
 
     }
+}
+
+.order__definition {
+  &__button {
+    width:20%;
+    margin: 0 auto;
+
+    .order_button {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+    }
+  }
 }
  
  

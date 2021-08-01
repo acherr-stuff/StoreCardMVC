@@ -28,6 +28,27 @@ export class catalogListModel {
         price: 3000,
         definition: "",
       },
+      {
+        id: "1",
+        name: "Смартфон DEXP A250",
+        image: pic1,
+        price: 3000,
+        definition: "",
+      },
+      {
+        id: "2",
+        name: "Планшет DEXP A250",
+        image: pic2,
+        price: 3000,
+        definition: "",
+      },
+      {
+        id: "3",
+        name: "Ноутбук DEXP A250",
+        image: pic3,
+        price: 3000,
+        definition: "",
+      },
     ];
   }
 }

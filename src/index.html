@@ -11,20 +11,34 @@
     </div>
     
     <div id="busket">
-      <h1>МОЯ КОРЗИНА:</h1>
-      <div id="busket_table">
+      <h1 class="header" id="busket_header">МОЯ КОРЗИНА:</h1>
+       <div id="empty_busket" >
+       <img class="empty_busket_pic" src="<%=require('./assets/images/klipartz.com.png').default%>" />
+        <P id="empty_busket_text"> Ваша корзина поркупок на данный момент пуста.</P>   
+        <P id="empty_busket_ref"> <a href="#">Нажмите сюда</a>, чтобы начать покупки.</P>        
+     
+      </div>
+      <div id="busket_table" class="unactive">
        
 
         
       </div>
 
       <div id="busket_bottom">
-       <!-- <div class="order__definition">
+       
+    </div>
+
+      <div class="order__definition">
          <div class="order__definition__sum">
 
          </div>
-       </div> -->
+         <div class="order__definition__button">
+           <button class="order_button">ОФОРМИТЬ ЗАКАЗ</button>
+         </div>
+   </div>
     </div>
+
+  
 
   </body>
 </html>
