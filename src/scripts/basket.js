@@ -24,7 +24,9 @@ export class busketListModel {
            this.busketProducts[decProduct].count--;
           this.busketProducts[decProduct].cost -=
             this.busketProducts[decProduct].price;
-        }
+        
+          this.sumOfTheProducts = this.sumOfTheProducts - this.busketProducts[decProduct].price;
+          }
 
         // console.log(
         //   this.busketProducts[decProduct].name +
@@ -33,7 +35,6 @@ export class busketListModel {
         // );
 
 
-      this.sumOfTheProducts = this.sumOfTheProducts - this.busketProducts[decProduct].price;
       // console.log(" перерасчет цены" + this.sumOfTheProducts);
      
     }
@@ -97,9 +98,9 @@ export class busketListView {
     for (let i = 0; i < tCount.length; i++) {
       
       if (tCount[i].dataset.id == item.id) {
-        console.log("новые значения будут отрисованы");
+        // console.log("новые значения будут отрисованы");
 
-        console.log("счетчик " + item.count);
+        // console.log("счетчик " + item.count);
 
 
         document
@@ -228,8 +229,9 @@ export class busketListController {
     const item = this.model.busketProducts.find((x) => x.id == id);
     this.model.decreaseItemCount(item);
     this.view.decreaseItemCount(item);
-    this.view.busketBottom.innerText = "ИТОГО: " + this.model.sumOfTheProducts + " Р";
 
+    this.view.busketBottom.innerText = "ИТОГО: " + this.model.sumOfTheProducts + " Р";
+    
   }
 
   handleIncreaseCount(id) {
