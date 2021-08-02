@@ -5,13 +5,22 @@ export class busketListModel {
     this.sumOfTheProducts = 0;
   }
 
-  // deleteFromBusket(id) {
-    
-  //   this.busketProducts.splice(id - 1, 1);
-  //   this.model.sumOfTheProducts =this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
+  deleteFromBusket(id) {
 
-  //   console.log(this.model.busketProducts.length);
-  // }
+    let delProduct = this.busketProducts.findIndex((x) => x.id == id);
+
+    // console.log(this.busketProducts[delProduct].name + "удален");
+
+    this.sumOfTheProducts = this.sumOfTheProducts - this.busketProducts[delProduct].cost;
+
+    this.busketProducts.splice(delProduct, 1);
+
+    // console.log("сумма покупок" + this.sumOfTheProducts);
+  }
+
+  bindBusketListChanged(callback) {
+    this.onBusketListChanged = callback;
+  }
 }
  
 export class busketListView {
@@ -34,6 +43,31 @@ export class busketListView {
     return element;
   }
 
+  deleteItemFromBusketPage(id) {
+    let tL = document.querySelectorAll(".busket__item");
+
+    if (tL.length == 1) {
+      this.busket.classList.add("unactive");
+      this.emptyBusket.classList.remove("unactive");
+    }
+
+    for (let i = 0; i < tL.length; i++) {
+      if (tL[i].dataset.id == id) {
+        // this.model.sumOfTheProducts =
+        //   this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
+        // this.view.busketBottom.innerText =
+        //   "ИТОГО: " + this.model.sumOfTheProducts + " Р";
+        // //удаление товара из массива элементов корзины
+        // this.model.busketProducts.splice(id - 1, 1);
+
+        //удалить div товара из корзины
+        removeRow(tL[i]);
+      }
+    }
+
+    // console.log(this.model.busketProducts.length);
+  }
+ 
 
   displayNewItem(item) {
 
@@ -127,43 +161,43 @@ export class busketListController {
     this.view.bindRemoveFromBusket(this.handleRemoveFromBusket.bind(this));
     this.view.bindIncreaseCount(this.handleIncreaseCount.bind(this));
     this.view.bindDecreaseCount(this.handleDecreaseCount.bind(this));
+    this.model.bindBusketListChanged(this.onBusketListChanged);
+
 
     if (this.model.busketProducts.length == 0) {
       this.view.busket.classList.add("unactive");
     }
   }
 
-  // bindBusketListChanged(callback) {
-  //   this.onBusketListChanged = callback;
+
+  // deleteFromBusket(id) {
+  //   let tL = document.querySelectorAll(".busket__item");
+
+  //   if (tL.length == 1) {
+  //     this.view.busket.classList.add("unactive");
+  //     this.view.emptyBusket.classList.remove("unactive");
+  //   }
+
+  //   for (let i = 0; i < this.model.busketProducts.length; i++) {
+  //     if (tL[i].dataset.id == id) {
+  //       this.model.sumOfTheProducts =
+  //         this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
+  //       this.view.busketBottom.innerText =
+  //         "ИТОГО: " + this.model.sumOfTheProducts + " Р";
+  //       //удаление товара из массива элементов корзины
+  //       this.model.busketProducts.splice(id - 1, 1);
+
+  //       //удалить div товара из корзины
+  //       removeRow(tL[i]);
+  //     }
+  //   }
+
+  //   console.log(this.model.busketProducts.length);
   // }
 
-  deleteFromBusket(id) {
-    let tL = document.querySelectorAll(".busket__item");
-
-    if (tL.length == 1) {
-      this.view.busket.classList.add("unactive");
-      this.view.emptyBusket.classList.remove("unactive");
-    }
-
-    for (let i = 0; i < this.model.busketProducts.length; i++) {
-      if (tL[i].dataset.id == id) {
-        this.model.sumOfTheProducts =
-          this.model.sumOfTheProducts - this.model.busketProducts[i].cost;
-        this.view.busketBottom.innerText =
-          "ИТОГО: " + this.model.sumOfTheProducts + " Р";
-        //удаление товара из массива элементов корзины
-        this.model.busketProducts.splice(id - 1, 1);
-
-        //удалить div товара из корзины
-        removeRow(tL[i]);
-      }
-    }
-
-    console.log(this.model.busketProducts.length);
-  }
-
   handleRemoveFromBusket(id) {
-    this.deleteFromBusket(id);
+    this.model.deleteFromBusket(id);
+    this.view.deleteItemFromBusketPage(id);
   }
 
   handleDecreaseCount(id) {
