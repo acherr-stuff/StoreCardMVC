@@ -1,26 +1,30 @@
-
 export class busketListModel {
   constructor() {
-    // this.busketProducts = [];
-    this.busketProducts = JSON.parse(localStorage.getItem("busket_list")) || [];
-    // this.sumOfTheProducts = 0;
-    // this.sumProductsLCBefore = 0;
-    this.sumOfTheProducts = JSON.parse(localStorage.getItem("busket_sum_ls")) || 0;
-
-
+    if (JSON.parse(localStorage.getItem("cart"))) {
+      this.busketProducts = JSON.parse(localStorage.getItem("cart"));
+      this.sumOfTheProducts = JSON.parse(localStorage.getItem("busket_sum_ls"));
+    } else {
+      this.busketProducts = [];
+      this.sumOfTheProducts = 0;
+    }
   }
 
   deleteFromBusket(id) {
     let delProduct = this.busketProducts.findIndex((x) => x.id == id);
 
-    this.sumOfTheProducts = this.sumOfTheProducts - this.busketProducts[delProduct].cost;
+    this.sumOfTheProducts =
+      this.sumOfTheProducts - this.busketProducts[delProduct].cost;
 
     this.busketProducts.splice(delProduct, 1);
 
-    localStorage.setItem("busket_list", JSON.stringify(this.busketProducts));
+    localStorage.setItem("cart", JSON.stringify(this.busketProducts));
 
-    localStorage.setItem( "busket_sum_ls", JSON.stringify(this.sumOfTheProducts));
+    localStorage.setItem(
+      "busket_sum_ls",
+      JSON.stringify(this.sumOfTheProducts)
+    );
 
+    console.log("товары в корзине:", this.busketProducts);
   }
 
   decreaseItemCount(item) {
@@ -28,41 +32,43 @@ export class busketListModel {
 
     if (this.busketProducts[decProduct].count > 1) {
       this.busketProducts[decProduct].count--;
+
       this.busketProducts[decProduct].cost -=
         this.busketProducts[decProduct].price;
 
-         localStorage.setItem(
-           "busket_list",
-           JSON.stringify(this.busketProducts)
-         );
-      
+      localStorage.setItem("cart", JSON.stringify(this.busketProducts));
+
       this.sumOfTheProducts =
         this.sumOfTheProducts - this.busketProducts[decProduct].price;
 
-            localStorage.setItem(
-              "busket_sum_ls",
-              JSON.stringify(this.sumOfTheProducts)
-            );
+      localStorage.setItem(
+        "busket_sum_ls",
+        JSON.stringify(this.sumOfTheProducts)
+      );
     }
-           
+
+    console.log("товары в корзине:", this.busketProducts);
   }
 
   increaseItemCount(item) {
     let incProduct = this.busketProducts.findIndex((x) => x.id == item.id);
 
     this.busketProducts[incProduct].count++;
+
     this.busketProducts[incProduct].cost +=
       this.busketProducts[incProduct].price;
 
-      localStorage.setItem("busket_list", JSON.stringify(this.busketProducts));
+    localStorage.setItem("cart", JSON.stringify(this.busketProducts));
 
     this.sumOfTheProducts =
       this.sumOfTheProducts + this.busketProducts[incProduct].price;
 
-    localStorage.setItem("busket_sum_ls", JSON.stringify(this.sumOfTheProducts) );
+    localStorage.setItem(
+      "busket_sum_ls",
+      JSON.stringify(this.sumOfTheProducts)
+    );
 
-
-    console.log("счетч увел, сумма покупок - ", this.sumOfTheProducts);
+    console.log("товары в корзине:", this.busketProducts);
   }
 
   addToBusket(item) {
@@ -73,43 +79,25 @@ export class busketListModel {
       //идем в эту ветку, если продукта с даннным id еще нет в корзине
 
       this.busketProducts.push(item);
-
-      item.count = 1;
+      // item.count = 1;
       item.cost = item.price * item.count;
-
-      localStorage.setItem("added to busket", item.name)
-      localStorage.setItem("busket_list", JSON.stringify(this.busketProducts));
-
+      // localStorage.setItem("added to busket", item.name)
+      // localStorage.setItem("cart", JSON.stringify(this.busketProducts));
     } else {
       //если есть товар с передаваемым id
-
-      item.count++;
+      // item.count++;
       item.cost = item.price * item.count;
-      localStorage.setItem("busket_list",JSON.stringify(this.busketProducts));
-
+      // localStorage.setItem("cart",JSON.stringify(this.busketProducts));
     }
-
-      // console.log("summ prev" + this.sumOfTheProducts);
-
-    //итоговая сумма всех товаров
-    this.sumOfTheProducts = this.sumOfTheProducts + item.price;
-
-    // console.log("summ " this.sumOfTheProducts);
-    localStorage.setItem("busket_sum_ls", JSON.stringify(this.sumOfTheProducts) );
-
   }
-
 }
-  
- 
+
 export class busketListView {
   constructor() {
     this.busket = this.getElement("#busket_table");
     this.busketBottom = this.getElement("#busket_bottom");
     this.emptyBusket = this.getElement("#empty_busket");
     this.busketBottomSumm = this.getElement(".busket_bottom__summ");
-    // this.sumProductsLCBefore = 0
-    // this.busket.className = "unactive";
   }
 
   createElement(tag, className) {
@@ -121,10 +109,10 @@ export class busketListView {
     const element = document.querySelector(selector);
     return element;
   }
-  //удаление элемента
+  //удаление строчки из таблицы
   removeRow(input) {
-    //Now we are getting the parent for the input element, marked as anyRow so we do not rely on fixed dom structure
-    //Furthermore we do not need to retrieve parentDiv anymore
+    // Теперь мы получаем родительский элемент для входного элемента, помеченный как anyRow, поэтому мы не полагаемся на фиксированную структуру dom
+    // Кроме того, нам больше не нужно получать parentDiv
     var tP = (function getParent(e) {
       return e.className.indexOf("busket__item") !== -1 || !e.parentNode
         ? e
@@ -153,44 +141,25 @@ export class busketListView {
   //методы для изменения представления при работе с каунтером идентичны, можно сделать метод "updateItemCount"
 
   updateItemCount(item) {
-  
     let tCount = document.querySelectorAll(".busket__item__count__number");
     let tCost = document.querySelectorAll(".busket__item__cost");
 
     for (let i = 0; i < tCount.length; i++) {
-
       if (tCount[i].dataset.id == item.id) {
-
-      tCount[i].innerText = item.count;
-      tCost[i].innerText = item.cost;
-
+        tCount[i].innerText = item.count;
+        tCost[i].innerText = item.cost;
       }
     }
   }
 
-  displayItemsFromStorage(items) {
-    while (this.busket.firstChild) {
-      this.busket.removeChild(this.busket.firstChild);
+  //если в localstorage уже есть товары з корзины, то выводим их при загрузке страницы
+  displayItemsFromStorage() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    for (let key in cart) {
+      // console.log(cart[key].name + " находится в корзине")
+      this.displayNewItem(cart[key]);
     }
-
-    //Если каталог пуст, показать сообщение
-    if (items.length == 0) {
-      console.log("пусто");
-      // const p = this.createElement("p");
-      // p.textContent = "В каталоге на данный момент нет товаров";
-      // this.catalog.append(p);
-    } else {
-      items.forEach((item) => {
-        this.displayNewItem(item);
-        console.log("отрисовано");
-        // this.sumProductsLCBefore += item.cost;
-      });
-
-      // this.busketBottomSumm.innerText = this.sumProductsLCBefore;
-    }
-
-
-  
   }
 
   displayNewItem(item) {
@@ -273,16 +242,41 @@ export class busketListView {
   }
 }
 
-
 export class busketListController {
   constructor(model, view) {
     this.model = model;
     this.view = view;
     this.onBusketListChanged(this.model.busketProducts);
+
+    console.log("уже в корзине" + this.model.busketProducts);
+
+    window.addEventListener(
+      "storage",
+      (e) => {
+        console.log("Обрабатываем в корзине изменение localStorage");
+        const cart = JSON.parse(localStorage.getItem("cart"));
+
+        for (let key in cart) {
+          // Добавить только тот, которого нету
+          this.addToBusket(cart[key]);
+        }
+
+        if (JSON.parse(localStorage.getItem("cart"))) {
+          this.model.busketProducts = JSON.parse(localStorage.getItem("cart"));
+        }
+
+        if (JSON.parse(localStorage.getItem("busket_sum_ls"))) {
+          this.model.sumOfTheProducts = JSON.parse(
+            localStorage.getItem("busket_sum_ls")
+          );
+        }
+      },
+      false
+    );
   }
 
   onBusketListChanged(items) {
-    this.view.displayItemsFromStorage(items);
+    this.view.displayItemsFromStorage();
     this.view.bindRemoveFromBusket(this.handleRemoveFromBusket.bind(this));
     this.view.bindIncreaseCount(this.handleIncreaseCount.bind(this));
     this.view.bindDecreaseCount(this.handleDecreaseCount.bind(this));
@@ -290,63 +284,50 @@ export class busketListController {
     if (this.model.busketProducts.length == 0) {
       this.view.busket.classList.add("unactive");
     }
-      this.view.busketBottomSumm.innerText = this.model.sumOfTheProducts;
-
-
+    this.view.busketBottomSumm.innerText = this.model.sumOfTheProducts;
   }
 
   handleRemoveFromBusket(id) {
     this.model.deleteFromBusket(id);
     this.view.deleteItemFromBusketPage(id);
-        this.view.busketBottomSumm.innerText =
-          JSON.parse(localStorage.getItem("busket_sum_ls")) + " Р";
-
+    this.view.busketBottomSumm.innerText =
+      JSON.parse(localStorage.getItem("busket_sum_ls")) + " ₽";
   }
 
   handleDecreaseCount(id) {
+    // this.view.displayItemsFromStorage();
     const item = this.model.busketProducts.find((x) => x.id == id);
     this.model.decreaseItemCount(item);
     this.view.updateItemCount(item);
-        this.view.busketBottomSumm.innerText =
-          JSON.parse(localStorage.getItem("busket_sum_ls")) + " Р";
-
-
-    
+    this.view.busketBottomSumm.innerText =
+      JSON.parse(localStorage.getItem("busket_sum_ls")) + " ₽";
   }
 
   handleIncreaseCount(id) {
     const item = this.model.busketProducts.find((x) => x.id == id);
     this.model.increaseItemCount(item);
     this.view.updateItemCount(item);
-    this.view.busketBottomSumm.innerText = JSON.parse(localStorage.getItem("busket_sum_ls")) + " Р";
-
-
-   
+    this.view.busketBottomSumm.innerText =
+      JSON.parse(localStorage.getItem("busket_sum_ls")) + " ₽";
   }
 
-
   addToBusket(item) {
-
     //ищем, есть ли товар item в корзине
-     let productInBusket = this.model.busketProducts.findIndex(
-       (x) => x.id == item.id
-     );
+    let productInBusket = this.model.busketProducts.findIndex(
+      (x) => x.id == item.id
+    );
 
     this.model.addToBusket(item);
 
     //ищем есть ли в корзине товар с таким id
     if (productInBusket == -1) {
-        //отрисовываем позицию для данного товара заново. если нет
+      //отрисовываем позицию для данного товара заново. если нет
       this.view.displayNewItem(item);
-    } 
-    
-    else {
+    } else {
       //обновляем данные для уже отрисованной позиции
       this.view.updateItemCount(item);
-      }
-          this.view.busketBottomSumm.innerText =
-            JSON.parse(localStorage.getItem("busket_sum_ls")) + " Р";
-
     }
-  
+    this.view.busketBottomSumm.innerText =
+      JSON.parse(localStorage.getItem("busket_sum_ls")) + " ₽";
   }
+}

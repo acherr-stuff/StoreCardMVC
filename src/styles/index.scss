@@ -55,6 +55,14 @@ body {
 }
 
 
+.productList {
+  
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
 .product {
 
   margin: 20px auto;

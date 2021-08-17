@@ -6,12 +6,8 @@ import '../styles/index.scss';
 
 // Подключаем скрипты
 import { busketListView, busketListModel, busketListController } from './basket';
-import { catalogListView, catalogListModel, catalogListController } from "./catalog";
+import  "./catalog";
 
-const catalog = new catalogListController(
-  new catalogListModel(),
-  new catalogListView()
-);
 
 const busket = new busketListController(
   new busketListModel(),
@@ -19,11 +15,6 @@ const busket = new busketListController(
 );
 
 
-//добавление в контролер каталога метода "addtoBusket"
-
-catalog.addToBusket = function (item) {
-  busket.addToBusket(item);
-};
 
 
 
